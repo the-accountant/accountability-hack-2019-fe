@@ -1,8 +1,4 @@
-import {
-  html,
-  css,
-  LitElement
-} from 'lit-element';
+import { html, css, LitElement } from 'lit-element';
 
 import horizonData from '../../../utils/processJSON.js';
 
@@ -10,7 +6,7 @@ import '../checkbox-selector.js';
 
 export class PageMain extends LitElement {
   static get styles() {
-    return css `
+    return css`
       checkbox-selector {
         margin: 4px;
       }
@@ -52,6 +48,21 @@ export class PageMain extends LitElement {
 
       .list h2 {
         font-size: 16px;
+      }
+
+      h3 {
+        font-size: 14px;
+      }
+
+      .list div.child:nth-child(even) {
+        background-color: white;
+      }
+
+      .list div.child {
+        padding: 8px;
+        margin: 4px;
+        border-radius: 4px;
+        font-size: 12px;
       }
     `;
   }
@@ -143,11 +154,11 @@ export class PageMain extends LitElement {
     return this.data
       .filter(
         value =>
-        this.domainsSelected.length === 0 || this.domainsSelected.indexOf(value.Domein) !== -1,
+          this.domainsSelected.length === 0 || this.domainsSelected.indexOf(value.Domein) !== -1,
       )
       .filter(
         value =>
-        this.companySelected.length === 0 || this.companySelected.indexOf(value.Fabrikant) !== -1,
+          this.companySelected.length === 0 || this.companySelected.indexOf(value.Fabrikant) !== -1,
       );
   }
 
@@ -155,9 +166,9 @@ export class PageMain extends LitElement {
     return input
       .filter(
         middel =>
-        middel.TotaleKosten !== undefined &&
-        middel.TotaleKosten !== null &&
-        middel.TotaleKosten !== 0,
+          middel.TotaleKosten !== undefined &&
+          middel.TotaleKosten !== null &&
+          middel.TotaleKosten !== 0,
       )
       .reduce(
         (min, middel) => (middel.TotaleKosten < min ? middel.TotaleKosten : min),
@@ -176,15 +187,15 @@ export class PageMain extends LitElement {
     return input
       .filter(
         middel =>
-        middel.TotaleKosten !== undefined &&
-        middel.TotaleKosten !== null &&
-        middel.TotaleKosten !== 0,
+          middel.TotaleKosten !== undefined &&
+          middel.TotaleKosten !== null &&
+          middel.TotaleKosten !== 0,
       )
       .reduce(
         (min, middel) =>
-        middel.TotaleKosten / middel.Patientvolume < min ?
-        middel.TotaleKosten / middel.Patientvolume :
-        min,
+          middel.TotaleKosten / middel.Patientvolume < min
+            ? middel.TotaleKosten / middel.Patientvolume
+            : min,
         input[0].TotaleKosten / input[0].Patientvolume,
       );
   }
@@ -193,22 +204,21 @@ export class PageMain extends LitElement {
     return input
       .filter(
         middel =>
-        middel.TotaleKosten !== undefined &&
-        middel.TotaleKosten !== null &&
-        middel.TotaleKosten !== 0,
+          middel.TotaleKosten !== undefined &&
+          middel.TotaleKosten !== null &&
+          middel.TotaleKosten !== 0,
       )
       .reduce(
         (max, middel) =>
-        middel.TotaleKosten / middel.Patientvolume > max ?
-        middel.TotaleKosten / middel.Patientvolume :
-        max,
+          middel.TotaleKosten / middel.Patientvolume > max
+            ? middel.TotaleKosten / middel.Patientvolume
+            : max,
         input[0].TotaleKosten / input[0].Patientvolume,
       );
   }
 
-
   render() {
-    return html `
+    return html`
       <div class="filters">
         <checkbox-selector
           .values="${this.domains}"
@@ -235,10 +245,8 @@ export class PageMain extends LitElement {
           </p>
           <p>
             <b>Min-max pp</b>
-            <!--
             ${this.euroFormatter.format(PageMain._minRangePP(this.dataView))} -
             ${this.euroFormatter.format(PageMain._maxRangePP(this.dataView))}
-  -->
           </p>
         </div>
 
@@ -247,7 +255,13 @@ export class PageMain extends LitElement {
           ${this.dataView.map(
             (item, index) =>
               html`
-                <p>${index + 1}. ${item.Stofnaam} - ${item.Fabrikant} - ${item.Domein}</p>
+                <div class="child">
+                  <h3>${index + 1}. ${item.Stofnaam} by ${item.Fabrikant}</h3>
+                  <p><b>${item.Hoofdindicatie}</b> ${item.UitgebreideIndicatie}</p>
+                  <p>Domain: ${item.Domein}</p>
+                  <p>Expected: ${item.VerwachteRegistratie}</p>
+                  <p>Total costs: ${item.TotaleKosten}</p>
+                </div>
               `,
           )}
         </div>
