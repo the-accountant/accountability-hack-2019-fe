@@ -1,4 +1,4 @@
-let horizonScanJSON = `[
+const horizonScanJSON = `[
     {
         "Stofnaam": "Abatacept",
         "Domein": "Chronische immuunziekten",
@@ -22001,10 +22001,10 @@ let horizonScanJSON = `[
     }
 ]`;
 
-let middelen = JSON.parse(horizonScanJSON);
-console.log("aantal middelen : " + middelen.length);
+const middelen = JSON.parse(horizonScanJSON);
+console.log(`aantal middelen : ${  middelen.length}`);
 
-let processed = [];
+const processed = [];
 
 middelen.forEach(middel => {
     let newMiddel = middel;
@@ -22048,4 +22048,7 @@ middelen.forEach(middel => {
     processed.push(newMiddel);
 });
 
-console.log("aantal middelen na porocessen: " + processed.length);
+console.log(`aantal middelen na porocessen: ${  processed.length}`);
+
+
+export default processed;
