@@ -3,7 +3,6 @@ import { html, css, LitElement } from 'lit-element';
 import horizonData from '../../../utils/processJSON.js';
 
 import '../checkbox-selector.js';
-import processed from "../../../utils/processJSON";
 
 export class PageMain extends LitElement {
   static get styles() {
@@ -73,6 +72,7 @@ export class PageMain extends LitElement {
       dataView: {
         type: Array,
       },
+      euroFormatter: Function,
     };
   }
 
@@ -85,6 +85,10 @@ export class PageMain extends LitElement {
     this.company = PageMain.loadCompanies(this.data);
     this.companySelected = [];
     this.dataView = this._updateDataView();
+    this.euroFormatter = new Intl.NumberFormat('nl-NL', {
+      style: 'currency',
+      currency: 'EUR',
+    });
   }
 
   static loadDomains(data) {
@@ -143,13 +147,20 @@ export class PageMain extends LitElement {
       );
   }
 
-  _minRange(processed) {
-    return processed.filter(middel => middel.TotaleKosten !== undefined && middel.TotaleKosten !== 0)
-        .reduce((min, middel) => middel.TotaleKosten < min ? middel.TotaleKosten : min, processed[0].TotaleKosten)
+  static _minRange(input) {
+    return input
+      .filter(middel => middel.TotaleKosten !== undefined && middel.TotaleKosten !== 0)
+      .reduce(
+        (min, middel) => (middel.TotaleKosten < min ? middel.TotaleKosten : min),
+        input[0].TotaleKosten,
+      );
   }
 
-  _maxRange(processed) {
-    return processed.reduce((max, middel) => middel.TotaleKosten > max ? middel.TotaleKosten : max, processed[0].TotaleKosten);
+  static _maxRange(input) {
+    return input.reduce(
+      (max, middel) => (middel.TotaleKosten > max ? middel.TotaleKosten : max),
+      input[0].TotaleKosten,
+    );
   }
 
   render() {
@@ -171,13 +182,22 @@ export class PageMain extends LitElement {
 
       <!-- Magic here with domains and company -->
       <div class="list">
-        <h2>Medicin</h2>
-        ${this.dataView.map(
-          (item, index) =>
-            html`
-              <p>${index + 1}. ${item.Stofnaam} - ${item.Fabrikant} - ${item.Domein}</p>
-            `,
-        )}
+        <div class="list">
+          <h2>Summary</h2>
+          <label>Min-max</label>
+          ${this.euroFormatter.format(PageMain._minRange(this.dataView))} -
+          ${this.euroFormatter.format(PageMain._maxRange(this.dataView))}
+        </div>
+
+        <div class="list">
+          <h2>Medicin</h2>
+          ${this.dataView.map(
+            (item, index) =>
+              html`
+                <p>${index + 1}. ${item.Stofnaam} - ${item.Fabrikant} - ${item.Domein}</p>
+              `,
+          )}
+        </div>
       </div>
     `;
   }
