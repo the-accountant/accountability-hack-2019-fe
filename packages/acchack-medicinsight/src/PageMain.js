@@ -1,4 +1,8 @@
-import { html, css, LitElement } from 'lit-element';
+import {
+  html,
+  css,
+  LitElement
+} from 'lit-element';
 
 import horizonData from '../../../utils/processJSON.js';
 
@@ -6,7 +10,7 @@ import '../checkbox-selector.js';
 
 export class PageMain extends LitElement {
   static get styles() {
-    return css`
+    return css `
       checkbox-selector {
         margin: 4px;
       }
@@ -75,7 +79,7 @@ export class PageMain extends LitElement {
 
   _updateDomain(event) {
     this.domainsSelected = event.detail;
-    // console.log(this.domainsSelected, this.domainsSelected.indexOf());
+    console.log(this.domainsSelected);
     this.dataView = this._updateDataView();
 
     if (this.domainsSelected.length > 0) {
@@ -99,7 +103,7 @@ export class PageMain extends LitElement {
   }
 
   render() {
-    return html`
+    return html `
       <checkbox-selector
         .values="${this.domains}"
         .selected="${this.domainsSelected}"

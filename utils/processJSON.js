@@ -22002,34 +22002,34 @@ const horizonScanJSON = `[
 ]`;
 
 const middelen = JSON.parse(horizonScanJSON);
-console.log(`aantal middelen : ${  middelen.length}`);
+// console.log(`aantal middelen : ${  middelen.length}`);
 
 const processed = [];
 
 middelen.forEach(middel => {
-    let newMiddel = middel;
+    const newMiddel = middel;
 
     // PrijsPerPatient
-    let PrijsPerPatient = newMiddel.PrijsPerPatient;
+    let {PrijsPerPatient} = newMiddel;
     PrijsPerPatient = PrijsPerPatient.replace(/\./g, "");
     PrijsPerPatient = PrijsPerPatient.replace(/€ /g, "");
     if (PrijsPerPatient.includes("-")) {
-        let PrijsPerPatientParts = PrijsPerPatient.split("-");
+        const PrijsPerPatientParts = PrijsPerPatient.split("-");
         PrijsPerPatient = (Number(PrijsPerPatientParts[0]) + Number(PrijsPerPatientParts[1])) / 2;
-        console.log("PrijsPerPatient Streepje - " + PrijsPerPatientParts[0] + "  " + PrijsPerPatientParts[1] + "  " + PrijsPerPatient);
+        // console.log("PrijsPerPatient Streepje - " + PrijsPerPatientParts[0] + "  " + PrijsPerPatientParts[1] + "  " + PrijsPerPatient);
     }
     newMiddel.PrijsPerPatient = Number(PrijsPerPatient);
 
     // TotaleKosten
-    let TotaleKosten = newMiddel.TotaleKosten;
+    let {TotaleKosten} = newMiddel;
     TotaleKosten = TotaleKosten.replace(/\./g, "");
     TotaleKosten = TotaleKosten.replace(/€ /g, "");
     if (TotaleKosten.includes("-")) {
-        let TotaleKostenParts = TotaleKosten.split("-");
+        const TotaleKostenParts = TotaleKosten.split("-");
         TotaleKosten = (Number(TotaleKostenParts[0]) + Number(TotaleKostenParts[1])) / 2;
-        console.log(" TotaleKosten Streepje - " + TotaleKostenParts[0] + "  " + TotaleKostenParts[1] + "  " + TotaleKosten);
+        // console.log(" TotaleKosten Streepje - " + TotaleKostenParts[0] + "  " + TotaleKostenParts[1] + "  " + TotaleKosten);
     };
-    console.log(" TotaleKosten - " + TotaleKosten);
+    // console.log(" TotaleKosten - " + TotaleKosten);
     newMiddel.TotaleKosten = Number(TotaleKosten);
 
 
@@ -22038,17 +22038,17 @@ middelen.forEach(middel => {
     Patientvolume = Patientvolume.replace(/\./g, "");
     Patientvolume = Patientvolume.replace(/€ /g, "");
     if (Patientvolume.includes("-")) {
-        let PatientvolumeParts = Patientvolume.split("-");
+        const PatientvolumeParts = Patientvolume.split("-");
         Patientvolume = (Number(PatientvolumeParts[0]) + Number(PatientvolumeParts[1])) / 2;
-        console.log(" Patientvolume Streepje - " + PatientvolumeParts[0] + "  " + PatientvolumeParts[1] + "  " + Patientvolume);
+        // console.log(" Patientvolume Streepje - " + PatientvolumeParts[0] + "  " + PatientvolumeParts[1] + "  " + Patientvolume);
     };
-    console.log(" Patientvolume - " + Patientvolume);
+    // console.log(" Patientvolume - " + Patientvolume);
     newMiddel.Patientvolume = Number(Patientvolume);
 
     processed.push(newMiddel);
 });
 
-console.log(`aantal middelen na porocessen: ${  processed.length}`);
+// console.log(`aantal middelen na porocessen: ${  processed.length}`);
 
 
 export default processed;
