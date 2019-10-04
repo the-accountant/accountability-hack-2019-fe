@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 
-import './PageMain.js';
+import '../page-main.js';
 
 export class AcchackMedicinsight extends LitElement {
   static get properties() {
