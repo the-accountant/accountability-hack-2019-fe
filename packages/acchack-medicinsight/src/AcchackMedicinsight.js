@@ -20,6 +20,18 @@ export class AcchackMedicinsight extends LitElement {
     this.page = 'main';
   }
 
+  static get styles() {
+    return css`
+      :host {
+      }
+      h1 {
+        margin: 16px;
+
+        font-weight: normal;
+      }
+    `;
+  }
+
   _renderPage() {
     switch (this.page) {
       case 'main':
@@ -47,27 +59,12 @@ export class AcchackMedicinsight extends LitElement {
   render() {
     return html`
       <header>
-        <ul>
-          <li>
-            <a href="#main" class=${this.__addActiveIf('main')} @click=${this.__clickPageLink}
-              >Main</a
-            >
-          </li>
-        </ul>
+        <h1>Medic<b>insight</b></h1>
       </header>
 
       <main>
         ${this._renderPage()}
       </main>
     `;
-  }
-
-  static get styles() {
-    return [
-      css`
-        :host {
-        }
-      `,
-    ];
   }
 }
