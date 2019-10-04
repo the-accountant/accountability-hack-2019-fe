@@ -22018,7 +22018,7 @@ middelen.forEach(middel => {
         PrijsPerPatient = (Number(PrijsPerPatientParts[0]) + Number(PrijsPerPatientParts[1])) / 2;
         console.log("PrijsPerPatient Streepje - " + PrijsPerPatientParts[0] + "  " + PrijsPerPatientParts[1] + "  " + PrijsPerPatient);
     }
-    newMiddel.PrijsPerPatient = PrijsPerPatient;
+    newMiddel.PrijsPerPatient = Number(PrijsPerPatient);
 
     // TotaleKosten
     let TotaleKosten = newMiddel.TotaleKosten;
@@ -22030,7 +22030,7 @@ middelen.forEach(middel => {
         console.log(" TotaleKosten Streepje - " + TotaleKostenParts[0] + "  " + TotaleKostenParts[1] + "  " + TotaleKosten);
     };
     console.log(" TotaleKosten - " + TotaleKosten);
-    newMiddel.TotaleKosten = TotaleKosten;
+    newMiddel.TotaleKosten = Number(TotaleKosten);
 
 
     // Patientvolume
@@ -22043,7 +22043,7 @@ middelen.forEach(middel => {
         console.log(" Patientvolume Streepje - " + PatientvolumeParts[0] + "  " + PatientvolumeParts[1] + "  " + Patientvolume);
     };
     console.log(" Patientvolume - " + Patientvolume);
-    newMiddel.Patientvolume = Patientvolume;
+    newMiddel.Patientvolume = Number(Patientvolume);
 
     processed.push(newMiddel);
 });
