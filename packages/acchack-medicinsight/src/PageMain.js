@@ -149,7 +149,12 @@ export class PageMain extends LitElement {
 
   static _minRange(input) {
     return input
-      .filter(middel => middel.TotaleKosten !== undefined && middel.TotaleKosten !== null && middel.TotaleKosten !== 0)
+      .filter(
+        middel =>
+          middel.TotaleKosten !== undefined &&
+          middel.TotaleKosten !== null &&
+          middel.TotaleKosten !== 0,
+      )
       .reduce(
         (min, middel) => (middel.TotaleKosten < min ? middel.TotaleKosten : min),
         input[0].TotaleKosten,
@@ -164,19 +169,37 @@ export class PageMain extends LitElement {
   }
 
   static _minRangePP(input) {
-    return input.filter(middel => middel.TotaleKosten !== undefined && middel.TotaleKosten !== null && middel.TotaleKosten !== 0)
-        .reduce(
-            (min, middel) => (middel.TotaleKosten / middel.Patientvolume < min ? middel.TotaleKosten / middel.Patientvolume : min),
-            input[0].TotaleKosten / middel.Patientvolume,
-        );
+    return input
+      .filter(
+        middel =>
+          middel.TotaleKosten !== undefined &&
+          middel.TotaleKosten !== null &&
+          middel.TotaleKosten !== 0,
+      )
+      .reduce(
+        (min, middel) =>
+          middel.TotaleKosten / middel.Patientvolume < min
+            ? middel.TotaleKosten / middel.Patientvolume
+            : min,
+        input[0].TotaleKosten / input[0].Patientvolume,
+      );
   }
 
   static _maxRangePP(input) {
-    return input.filter(middel => middel.TotaleKosten !== undefined && middel.TotaleKosten !== null && middel.TotaleKosten !== 0)
-        .reduce(
-            (max, middel) => (middel.TotaleKosten / middel.Patientvolume > max ? middel.TotaleKosten / middel.Patientvolume : max),
-            input[0].TotaleKosten / middel.Patientvolume,
-        );
+    return input
+      .filter(
+        middel =>
+          middel.TotaleKosten !== undefined &&
+          middel.TotaleKosten !== null &&
+          middel.TotaleKosten !== 0,
+      )
+      .reduce(
+        (max, middel) =>
+          middel.TotaleKosten / middel.Patientvolume > max
+            ? middel.TotaleKosten / middel.Patientvolume
+            : max,
+        input[0].TotaleKosten / input[0].Patientvolume,
+      );
   }
 
   render() {
