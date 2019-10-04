@@ -22011,4 +22011,4 @@ middelen.forEach(middel => {
     processed.push(middel);
 });
 
-console.log("aantal middelen na porocessen: " + middelen.length);
+console.log("aantal middelen na porocessen: " + processed.length);
