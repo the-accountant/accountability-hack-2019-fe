@@ -1,8 +1,4 @@
-import {
-  html,
-  css,
-  LitElement
-} from 'lit-element';
+import { html, css, LitElement } from 'lit-element';
 
 import horizonData from '../../../utils/processJSON.js';
 
@@ -11,9 +7,48 @@ import processed from "../../../utils/processJSON";
 
 export class PageMain extends LitElement {
   static get styles() {
-    return css `
+    return css`
       checkbox-selector {
         margin: 4px;
+      }
+
+      div {
+        margin: 8px;
+      }
+
+      @media (max-width: 800px) {
+        div {
+          width: 100%;
+        }
+
+        :host {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+
+      @media (min-width: 801px) {
+        div.filters {
+          width: 25%;
+        }
+        div.list {
+          width: 70%;
+        }
+
+        :host {
+          display: flex;
+          flex-direction: row;
+        }
+      }
+
+      .list {
+        border: 1px solid black;
+        border-radius: 4px;
+        padding: 8px;
+      }
+
+      .list h2 {
+        font-size: 16px;
       }
     `;
   }
@@ -44,43 +79,38 @@ export class PageMain extends LitElement {
   constructor() {
     super();
 
-    this.data = horizonData.slice(0, 10);
-    this.domains = this.loadDomains();
+    this.data = horizonData; // .slice(0, 10);
+    this.domains = PageMain.loadDomains(this.data);
     this.domainsSelected = [];
-    this.company = PageMain.getFabrikant(this.loadCompanies());
+    this.company = PageMain.loadCompanies(this.data);
     this.companySelected = [];
     this.dataView = this._updateDataView();
   }
 
-  static getFabrikant(set) {
-    const _selectFabrikant = item => item.Fabrikant;
-    return set.map(_selectFabrikant);
-  }
-
-  loadDomains() {
+  static loadDomains(data) {
     const _isEmpty = value => value !== '';
     const _isDistinct = (value, index, self) => self.indexOf(value) === index;
     const _selectDomain = item => item.Domein;
-    return this.data
+    return data
       .map(_selectDomain)
       .filter(_isEmpty)
       .filter(_isDistinct)
       .sort();
   }
 
-  loadCompanies() {
+  static loadCompanies(data) {
     const _isEmpty = value => value !== '';
     const _isDistinct = (value, index, self) => self.indexOf(value) === index;
-
-    return this.data
-      .filter(_isEmpty)
+    const _selectFabrikant = item => item.Fabrikant;
+    return data
+      .map(_selectFabrikant)
       .filter(_isDistinct)
+      .filter(_isEmpty)
       .sort();
   }
 
   _updateDomain(event) {
     this.domainsSelected = event.detail;
-    console.log(this.domainsSelected);
     this.dataView = this._updateDataView();
 
     if (this.domainsSelected.length > 0) {
@@ -88,19 +118,29 @@ export class PageMain extends LitElement {
         // console.log(value, this.domainsSelected);
         this.domainsSelected.indexOf(value.Domein) !== -1;
 
-      this.company = PageMain.getFabrikant(this.loadCompanies().filter(_isSelectedDomain));
+      this.company = PageMain.loadCompanies(this.data.filter(_isSelectedDomain));
     } else {
-      this.company = PageMain.getFabrikant(this.loadCompanies());
+      this.company = PageMain.loadCompanies(this.data);
     }
   }
 
   _updateCompany(event) {
-    this.domainsSelected = event.detail;
-    this._updateDataView();
+    this.companySelected = event.detail;
+
+    console.log(`Company is ${event.detail}`, this.companySelected);
+    this.dataView = this._updateDataView();
   }
 
   _updateDataView() {
-    return this.data;
+    return this.data
+      .filter(
+        value =>
+          this.domainsSelected.length === 0 || this.domainsSelected.indexOf(value.Domein) !== -1,
+      )
+      .filter(
+        value =>
+          this.companySelected.length === 0 || this.companySelected.indexOf(value.Fabrikant) !== -1,
+      );
   }
 
   _minRange(processed) {
@@ -113,27 +153,32 @@ export class PageMain extends LitElement {
   }
 
   render() {
-    return html `
-      <checkbox-selector
-        .values="${this.domains}"
-        .selected="${this.domainsSelected}"
-        title="Domain"
-        @update="${this._updateDomain}"
-      ></checkbox-selector>
-      <checkbox-selector
-        .values="${this.company}"
-        .selected="${this.companySelected}"
-        title="Company"
-        @update="${this._updateCompany}"
-      ></checkbox-selector>
+    return html`
+      <div class="filters">
+        <checkbox-selector
+          .values="${this.domains}"
+          .selected="${this.domainsSelected}"
+          title="Domain"
+          @update="${this._updateDomain}"
+        ></checkbox-selector>
+        <checkbox-selector
+          .values="${this.company}"
+          .selected="${this.companySelected}"
+          title="Company"
+          @update="${this._updateCompany}"
+        ></checkbox-selector>
+      </div>
 
       <!-- Magic here with domains and company -->
-      ${this.dataView.map(
-        (item, index) =>
-          html`
-            <p>${index + 1}. ${item.Stofnaam}</p>
-          `,
-      )}
+      <div class="list">
+        <h2>Medicin</h2>
+        ${this.dataView.map(
+          (item, index) =>
+            html`
+              <p>${index + 1}. ${item.Stofnaam} - ${item.Fabrikant} - ${item.Domein}</p>
+            `,
+        )}
+      </div>
     `;
   }
 }

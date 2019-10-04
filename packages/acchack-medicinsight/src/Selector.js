@@ -3,6 +3,10 @@ import { html, css, LitElement } from 'lit-element';
 export class Selector extends LitElement {
   static get styles() {
     return css`
+      :host {
+        display: block;
+      }
+
       .list {
         display: flex;
         flex-direction: column;
@@ -47,7 +51,6 @@ export class Selector extends LitElement {
     if (this.selected.indexOf(value) === -1) {
       this.selected.push(value);
     } else {
-      console.log('hi');
       this.selected = this.selected.filter(item => item !== value);
     }
 
