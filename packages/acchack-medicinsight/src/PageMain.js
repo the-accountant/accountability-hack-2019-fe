@@ -7,6 +7,7 @@ import {
 import horizonData from '../../../utils/processJSON.js';
 
 import '../checkbox-selector.js';
+import processed from "../../../utils/processJSON";
 
 export class PageMain extends LitElement {
   static get styles() {
@@ -100,6 +101,15 @@ export class PageMain extends LitElement {
 
   _updateDataView() {
     return this.data;
+  }
+
+  _minRange(processed) {
+    return processed.filter(middel => middel.TotaleKosten !== undefined && middel.TotaleKosten !== 0)
+        .reduce((min, middel) => middel.TotaleKosten < min ? middel.TotaleKosten : min, processed[0].TotaleKosten)
+  }
+
+  _maxRange(processed) {
+    return processed.reduce((max, middel) => middel.TotaleKosten > max ? middel.TotaleKosten : max, processed[0].TotaleKosten);
   }
 
   render() {
